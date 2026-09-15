@@ -47,7 +47,7 @@ bsl-gesture-recognition/
 ├── data/
 │   └── README.md
 ├── docs/
-│   └── project_report.pdf
+│   └── project_report_summary.md
 └── notebooks/
     └── bsl_gesture_recognition.ipynb
 ```
@@ -95,7 +95,7 @@ The original coursework notebook has been reorganised into a clearer, self-conta
 
 ## Report
 
-The full coursework report is available at [`docs/project_report.pdf`](docs/project_report.pdf). The public repository copy has the student ID removed for privacy; the technical content is unchanged.
+A structured summary of the coursework report is available at [`docs/project_report_summary.md`](docs/project_report_summary.md). University-specific personal details are intentionally excluded from the public repository.
 
 ## Limitations and future work
 
