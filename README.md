@@ -1,107 +1,101 @@
 # British Sign Language Gesture Recognition
 
-Deep-learning image classification project for recognising **11 static British Sign Language (BSL) alphabet gestures** from hand images. The project compares a convolutional neural network trained from scratch with two MobileNetV2 transfer-learning strategies.
+**Computer vision · Transfer learning · Model evaluation**
 
-## Project overview
+An image classification project comparing a CNN trained from scratch with two MobileNetV2 approaches to recognise **11 static British Sign Language alphabet gestures**.
 
-The aim of the project was to investigate how transfer learning affects recognition accuracy when working with a balanced but relatively limited BSL image dataset.
+The fine-tuned model achieved approximately **94% validation accuracy**, compared with approximately 75% for the baseline CNN.
 
-Three models were compared:
+[Explore the notebook](notebooks/bsl_gesture_recognition.ipynb) · [Read the report summary](docs/project_report_summary.md) · [Dataset setup](data/README.md)
 
-| Model | Approach | Validation accuracy reported |
+## The problem
+
+Recognising hand gestures requires a model to distinguish small differences in finger position and orientation. This project investigates whether pretrained visual features improve performance on a balanced but limited BSL image dataset.
+
+## Results
+
+| Model | Training approach | Reported validation accuracy |
 | --- | --- | ---: |
 | Baseline CNN | Trained from scratch | ~75% |
-| MobileNetV2 | Frozen pretrained backbone | ~89% |
-| MobileNetV2 | Fine-tuned upper layers | ~94% |
+| MobileNetV2 | Frozen ImageNet backbone | ~89% |
+| MobileNetV2 | Fine-tuned upper layers | **~94%** |
 
-The fine-tuned MobileNetV2 model produced the strongest validation performance and the most stable learning behaviour. The baseline CNN showed clear overfitting, highlighting the value of pretrained visual features for this task.
+Fine-tuning improved reported validation accuracy by approximately **19 percentage points** over the baseline. The baseline showed clear overfitting, while the fine-tuned model had the strongest validation performance.
 
-## Dataset
+These are approximate results from the coursework experiment, measured on its validation split. They do not represent performance on a separate held-out test set or live webcam input.
 
-The coursework experiment used a balanced dataset containing:
+## What I built
 
-- **11,000 images**
-- **11 static BSL alphabet classes**
-- **1,000 images per class**
-- Images resized to **224 × 224 RGB**
-- 80/20 training-validation split in the supplied notebook workflow
+- A notebook workflow covering image loading, preprocessing, training and evaluation.
+- A baseline CNN and two transfer learning experiments using TensorFlow and Keras.
+- Learning-curve comparisons to examine convergence and overfitting.
+- A confusion matrix and classification report for class-level error analysis.
 
-The dataset itself is **not included** in this repository. See [`data/README.md`](data/README.md) for the expected directory structure.
+## Dataset and method
 
-## Methodology
+| Component | Configuration |
+| --- | --- |
+| Dataset | 11,000 images; 1,000 per class |
+| Task | Single-label classification across 11 static alphabet gestures |
+| Input | 224 × 224 RGB images |
+| Split | 80% training, 20% validation |
+| Baseline preprocessing | Pixel values scaled to `[0, 1]` |
+| Transfer learning preprocessing | MobileNetV2 preprocessing |
+| Fine-tuning | Upper backbone layers trained at a lower learning rate |
 
-1. Load and preprocess the gesture image dataset.
-2. Train a baseline CNN using pixel values normalised to `[0, 1]`.
-3. Train MobileNetV2 with the ImageNet backbone frozen.
-4. Unfreeze the upper MobileNetV2 layers and fine-tune using a lower learning rate.
-5. Compare validation learning curves and class-level predictions.
-6. Generate a confusion matrix and classification report for the selected model.
+The dataset is not distributed in this repository. Follow the [dataset instructions](data/README.md) to supply your own copy. Augmentation must preserve sign meaning; transformations such as horizontal flipping can change a gesture.
 
-## Repository structure
+## Run the notebook
 
-```text
-bsl-gesture-recognition/
-├── README.md
-├── requirements.txt
-├── .gitignore
-├── data/
-│   └── README.md
-├── docs/
-│   └── project_report_summary.md
-└── notebooks/
-    └── bsl_gesture_recognition.ipynb
-```
-
-## Technologies
-
-- Python
-- TensorFlow / Keras
-- MobileNetV2
-- NumPy
-- Matplotlib
-- scikit-learn
-- Google Colab
-
-## Getting started
-
-Clone the repository and install the dependencies:
+Clone the repository and create an environment:
 
 ```bash
 git clone https://github.com/Froz3n12/bsl-gesture-recognition.git
 cd bsl-gesture-recognition
 python -m venv .venv
-source .venv/bin/activate   # Linux/macOS
-pip install -r requirements.txt
 ```
 
-On Windows PowerShell:
+Activate it on Linux or macOS:
+
+```bash
+source .venv/bin/activate
+```
+
+Or on Windows PowerShell:
 
 ```powershell
 .venv\Scripts\Activate.ps1
-pip install -r requirements.txt
 ```
 
-Then open:
+Install dependencies and launch Jupyter:
 
-```text
-notebooks/bsl_gesture_recognition.ipynb
+```bash
+python -m pip install -r requirements.txt
+jupyter notebook notebooks/bsl_gesture_recognition.ipynb
 ```
 
-Update `ZIP_PATH` or `DATA_DIR` in the notebook to point to your copy of the dataset before running the training cells.
+Set `ZIP_PATH` or `DATA_DIR` in the notebook to your dataset location before running the cells in order. The notebook can also be used in Google Colab with the dataset paths adjusted.
 
-## Notebook cleanup
+## Repository guide
 
-The original coursework notebook has been reorganised into a clearer, self-contained workflow while preserving the same model architectures and training strategy. The final confusion-matrix section has also been corrected so it computes predictions directly from the validation generator instead of referencing undefined variables.
+| Path | Contents |
+| --- | --- |
+| [notebooks/bsl_gesture_recognition.ipynb](notebooks/bsl_gesture_recognition.ipynb) | Training and evaluation workflow |
+| [docs/project_report_summary.md](docs/project_report_summary.md) | Methodology, findings and error analysis |
+| [data/README.md](data/README.md) | Expected dataset layout |
+| [requirements.txt](requirements.txt) | Python dependencies |
 
-## Report
+**Tools:** Python, TensorFlow, Keras, MobileNetV2, NumPy, Matplotlib, scikit-learn, Jupyter and Google Colab.
 
-A structured summary of the coursework report is available at [`docs/project_report_summary.md`](docs/project_report_summary.md). University-specific personal details are intentionally excluded from the public repository.
+## Scope and next steps
 
-## Limitations and future work
+This is a static image classifier for a subset of the BSL alphabet. It does not translate full BSL conversations or recognise movement over time.
 
-The project focuses on static signs and a subset of the BSL alphabet. Future work could include the full alphabet, more varied recording conditions, a dedicated reproducible held-out test split, real-time webcam inference, and temporal models for dynamic gestures.
+Further work would add a dedicated held-out test set, more varied lighting and viewpoints, webcam evaluation and temporal models for dynamic gestures. Dependencies specify minimum versions rather than a fully locked environment, so fresh training runs may produce different results.
 
 ## Author
 
 **Munib Sarfraz**  
-Computer Science with Artificial Intelligence
+First Class Computer Science with Artificial Intelligence graduate, Birmingham City University.
+
+[LinkedIn](https://www.linkedin.com/in/munib-sarfraz/) · [GitHub](https://github.com/Froz3n12)
